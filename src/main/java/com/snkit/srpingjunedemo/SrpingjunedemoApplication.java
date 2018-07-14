@@ -23,6 +23,8 @@ public class SrpingjunedemoApplication implements CommandLineRunner {
 	@Override
 	public void run(String... arg0) throws Exception {
 		
+		System.out.println("  Git branch version merge and pull request test");
+		
 		UserEntity user = new UserEntity();
 		
 		user.setEmail("test@test.com");
