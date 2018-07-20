@@ -1,13 +1,21 @@
 package com.snkit.srpingjunedemo.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Id;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
 @Table(schema="microservice",name="user")
@@ -31,6 +39,14 @@ public class UserEntity implements Serializable {
 	
 	@Column(name="name")
 	private String name;
+	
+	@OneToMany(cascade=CascadeType.ALL,mappedBy="userEntity",fetch=FetchType.LAZY)	
+	private List<AddressEntity> addressList = new ArrayList<AddressEntity>();
+	
+	@ManyToMany(cascade= {CascadeType.MERGE,CascadeType.REFRESH})
+	@JoinTable(name="user_role_mapping" ,joinColumns= {@JoinColumn( name="user_id",referencedColumnName="id")},
+	inverseJoinColumns= {@JoinColumn( name="role_id",referencedColumnName="roleid")})
+	private List<RoleEntity> rolesList =  new ArrayList<>() ;
 
 	public Long getId() {
 		return id;
@@ -54,6 +70,22 @@ public class UserEntity implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public List<AddressEntity> getAddressList() {
+		return addressList;
+	}
+
+	public void setAddressList(List<AddressEntity> addressList) {
+		this.addressList = addressList;
+	}
+
+	public List<RoleEntity> getRolesList() {
+		return rolesList;
+	}
+
+	public void setRolesList(List<RoleEntity> rolesList) {
+		this.rolesList = rolesList;
 	}
 	
 	
